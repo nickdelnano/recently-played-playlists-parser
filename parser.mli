@@ -1,3 +1,3 @@
 open PlaylistTypes
 
-val parse_playlist_expr : playlist_token list -> playlist_token list * playlist_expr
+val parse_playlist_expr : playlist_token list -> playlist_expr * playlist_token list

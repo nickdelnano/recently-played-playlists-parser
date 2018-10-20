@@ -30,7 +30,7 @@ let lookahead toks =
  * Sets filter object set with data from each parsed token.
  * Returns list of toks yet to be consumed.
  *)
-let rec parse_filter_attributes filter toks = 
+let rec parse_filter_attributes (filter : filter_cl) (toks : playlist_token list) : playlist_token list = 
     let l = lookahead toks in
     match l with
         (Tok_Time_Begin x) ->
@@ -80,28 +80,28 @@ let rec parse_filter_attributes filter toks =
             match_playlist_token toks (Tok_Filter_End)
         | _ -> raise (ParseError "no match on tokens which compose a filter")
 
-let rec parse_filter toks =
+let rec parse_filter (toks : playlist_token list) : (filter * playlist_token list) =
     let l = lookahead toks in
     match l with
         (Tok_Filter) ->
             let t = match_playlist_token toks Tok_Filter in
             let f = new filter_cl in
             let t' = parse_filter_attributes f t in
-            (f, t')
+            (Filter(f), t')
         | _ -> raise (ParseError "no Tok_Filter token")
 
-let rec parse_playlist_MP toks = 
+let rec parse_playlist_MP (toks : playlist_token list) : (playlist_expr * playlist_token list) =
     let l = lookahead toks in
     match l with
         (Tok_MP) ->
             let t = match_playlist_token toks Tok_MP in
             let filter, t' = parse_filter t in
 
-            MP (Filter(filter)), t'
+            MP (filter), t'
 
         | _ -> raise (ParseError "no Tok_MP token")
 
-let rec parse_playlist_And_Not toks = 
+let rec parse_playlist_And_Not (toks : playlist_token list) : (playlist_expr * playlist_token list) =
     let (e1, t) = parse_playlist_MP toks in
     let l = lookahead t in
     match l with 
@@ -112,7 +112,7 @@ let rec parse_playlist_And_Not toks =
         | _ -> 
             (e1, t)
 
-let rec parse_playlist_And toks = 
+let rec parse_playlist_And (toks : playlist_token list) : (playlist_expr * playlist_token list) =
     let (e1, t) = parse_playlist_And_Not toks in
     let l = lookahead t in
     match l with 
@@ -123,7 +123,7 @@ let rec parse_playlist_And toks =
         | _ -> 
             (e1, t)
 
-let rec parse_playlist_Or toks = 
+let rec parse_playlist_Or (toks : playlist_token list) : (playlist_expr * playlist_token list) =
     let (e1, t) = parse_playlist_And toks in
     let l = lookahead t in
     match l with 
@@ -134,6 +134,10 @@ let rec parse_playlist_Or toks =
         | _ -> 
             (e1, t)
 
-let rec parse_playlist_expr toks = 
-    let (e1, t) = parse_playlist_Or toks in
-    (t, e1)
+let rec parse_playlist_expr (toks : playlist_token list) : (playlist_expr * playlist_token list) =
+    let (ast, t) = parse_playlist_Or toks in
+
+    (* Token stream should end with Tok_End by definition. *)
+    let t' = match_playlist_token t Tok_End in
+    (* TODO: throw exception if t' still has tokens *)
+    (ast, t')

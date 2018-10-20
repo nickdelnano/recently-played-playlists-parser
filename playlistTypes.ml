@@ -46,23 +46,23 @@ class filter_cl =
     val mutable release_end = ( "99999999999" : string )
 
     (* getters *)
-    method get_time_begin = 
+    method get_time_begin : string = 
       time_begin
-    method get_time_end = 
+    method get_time_end : string = 
       time_end
-    method get_agby = 
+    method get_agby : string = 
       agby
-    method get_limit = 
+    method get_limit : string = 
       limit
-    method get_saved = 
+    method get_saved : string = 
       saved
-    method get_count = 
+    method get_count : string = 
       count
-    method get_comparator = 
+    method get_comparator : string = 
       comparator
-    method get_release_start = 
+    method get_release_start : string = 
       release_start
-    method get_release_end = 
+    method get_release_end : string = 
       release_end
 
     (* setters *)

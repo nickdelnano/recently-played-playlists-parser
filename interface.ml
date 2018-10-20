@@ -20,12 +20,12 @@ match Sys.argv.(1) with
 | "lex" ->
   print_string @@ string_of_list ~newline:true string_of_playlist_token toks
 | "parse_playlist_expr" ->
-  let (remaining, e) = Parser.parse_playlist_expr toks in
-  print_string @@ string_of_playlist_expr e;
+  let (ast, leftover_toks) = Parser.parse_playlist_expr toks in
+  print_string @@ string_of_playlist_expr ast;
 
-  print_string ("\nRemaining tokens: " ^ (string_of_list ~newline:true string_of_playlist_token remaining));
+  print_string ("\nRemaining tokens: " ^ (string_of_list ~newline:true string_of_playlist_token leftover_toks));
 
-  let playlist = Eval.eval_playlist_expr e [] "15" in
+  let playlist = Eval.eval_playlist_expr ast [] "15" in
   print_string "done!"
 
 | _ ->

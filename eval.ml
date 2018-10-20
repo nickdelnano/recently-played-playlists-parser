@@ -1,6 +1,8 @@
 open PlaylistTypes
 open Common
-exception EvalError of string
+open Json
+
+open Yojson
 
 
 let rec eval_playlist_expr e songs user_id = 
@@ -20,24 +22,5 @@ let rec eval_playlist_expr e songs user_id =
     | MP(filter) ->
         match filter with
         Filter(f) ->
-
-          let query = format_of_string "
-        SELECT * FROM
-          (
-            SELECT 
-              COUNT(*) as num_plays, 
-              track_id as id 
-                FROM songs_played 
-                  WHERE user_id = %s AND 
-                    played_at > %s AND
-                    played at < %s
-
-                  GROUP BY (track_id) 
-                  ORDER BY num_plays DESC
-          ) t1
-        INNER JOIN tracks using (id);
-        " in
-
-          let q = Printf.sprintf query user_id (f#get_time_begin) (f#get_time_end) in
-          print_string q;
-          ["hi"]
+          let filter_json  = filters_to_json f in
+          []

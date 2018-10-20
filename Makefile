@@ -7,7 +7,7 @@ INTERFACE_RESULT = interface.byte
 TEST_RESULT = test.byte
 
 OCAMLLDFLAGS = -g
-PACKS = oUnit,str
+PACKS = oUnit,str,yojson
 
 all: $(STUDENT_RESULT) $(INTERFACE_RESULT)
 
