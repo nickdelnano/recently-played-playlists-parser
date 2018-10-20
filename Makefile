@@ -1,13 +1,13 @@
 OCAMLBUILD = ocamlbuild
 
-SOURCES = parser.ml utils.ml playlistTypes.ml
+SOURCES = parser.ml utils.ml playlistTypes.ml http.ml
 TEST_SOURCES = test.ml
 
 INTERFACE_RESULT = interface.byte
 TEST_RESULT = test.byte
 
 OCAMLLDFLAGS = -g
-PACKS = oUnit,str,yojson
+PACKS = oUnit,str,yojson,cohttp-lwt-unix
 
 all: $(STUDENT_RESULT) $(INTERFACE_RESULT)
 
