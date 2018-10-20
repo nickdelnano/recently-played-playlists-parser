@@ -14,7 +14,7 @@ let print_usage () =
 if Array.length Sys.argv < 2 then begin print_usage (); exit 1 end;;
 
 
- let toks = [Tok_MP; Tok_Filter; Tok_Time_Begin("1"); Tok_Time_End("2"); Tok_Agby("song_id"); Tok_Limit("5"); Tok_Release_Start("10"); Tok_Release_End("50"); Tok_Filter_End; Tok_And_Not; Tok_MP; Tok_Filter; Tok_Agby("song_id"); Tok_Saved; Tok_Comparator("1"); Tok_Count("10"); Tok_Filter_End; Tok_End];;
+ let toks = [Tok_MP; Tok_Filter; Tok_Time_Begin("1"); Tok_Time_End("2"); Tok_Agby("track_id"); Tok_Limit("5"); Tok_Release_Start("10"); Tok_Release_End("50"); Tok_Filter_End; Tok_And_Not; Tok_MP; Tok_Filter; Tok_Agby("track_id"); Tok_Saved; Tok_Comparator("1"); Tok_Count("10"); Tok_Filter_End; Tok_End];;
 
 
 let username = "ndelnano" in

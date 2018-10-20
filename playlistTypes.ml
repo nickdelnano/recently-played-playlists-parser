@@ -28,8 +28,8 @@ class filter_cl =
     val mutable time_begin = ( "0" : string )
     (* Latest UTC -- 11 digits *)
     val mutable time_end = ( "99999999999" : string )
-    (* Only song_id for now *)
-    val mutable agby = ( "song_id" : string )
+    (* Only track_id for now *)
+    val mutable agby = ( "track_id" : string )
     val mutable limit = ( "-1" : string )
     (* saved won't be implemented until I figure out
      * how I want to handle implementing spotify api client in ocaml

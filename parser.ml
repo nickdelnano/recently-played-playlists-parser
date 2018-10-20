@@ -45,7 +45,7 @@ let rec parse_filter_attributes (filter : filter_cl) (toks : playlist_token list
             (* 
              * The way the grammar is written, this should
              * be parsed in its own fcn. Since there's only one value for now,
-             * (song_id) leave it like this.
+             * (track_id) leave it like this.
              *)
             let t = match_playlist_token toks (Tok_Agby x) in
             filter#set_agby x;
