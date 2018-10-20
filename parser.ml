@@ -2,8 +2,13 @@ open PlaylistTypes
 open Utils
 exception ParseError of string
 
-(* Provided helper function - takes a token list and an exprected token.
- * Handles error cases and returns the tail of the list *)
+(* The functions in this file read bottom to top as I didn't want to use
+ * mutual recursion (for no reason other than I forget its limitations/use case.
+ * Reading bottom to top will make WAY more sense!
+ *)
+
+(* Params: toks: token list, tok: expected next token
+ * Consumes tok and returns rest of list *)
 let match_playlist_token (toks : playlist_token list) (tok : playlist_token) : playlist_token list =
   match toks with
   | [] -> raise (InvalidInputException(string_of_playlist_token tok))
@@ -20,78 +25,81 @@ let lookahead toks =
     [] -> (raise (ParseError "No Tokens"))
   | h::_ -> h
 
-let rec parse_PreAgFilter pre_filter toks = 
+(* --This function relies on setting state in the filter object--
+ * Parses toks until TOK_NULL is reached.
+ * Sets filter object set with data from each parsed token.
+ * Returns list of toks yet to be consumed.
+ *)
+let rec parse_filter_attributes filter toks = 
     let l = lookahead toks in
     match l with
-        (Tok_Begin x) ->
-            let t' = match_playlist_token toks (Tok_Begin x) in
-            pre_filter#set_begin x;
-            parse_PreAgFilter pre_filter t'
-        | (Tok_End x) ->
-            let t' = match_playlist_token toks (Tok_End x) in
-            pre_filter#set_end x;
-            parse_PreAgFilter pre_filter t'
+        (Tok_Time_Begin x) ->
+            let t = match_playlist_token toks (Tok_Time_Begin x) in
+            filter#set_time_begin x;
+            parse_filter_attributes filter t
+        | (Tok_Time_End x) ->
+            let t = match_playlist_token toks (Tok_Time_End x) in
+            filter#set_time_end x;
+            parse_filter_attributes filter t
         | (Tok_Agby x) ->
             (* 
              * The way the grammar is written, this should
              * be parsed in its own fcn. Since there's only one value for now,
-             * leave it like this.
+             * (song_id) leave it like this.
              *)
-            let t' = match_playlist_token toks (Tok_Agby x) in
-            pre_filter#set_agby x;
-            parse_PreAgFilter pre_filter t'
+            let t = match_playlist_token toks (Tok_Agby x) in
+            filter#set_agby x;
+            parse_filter_attributes filter t
         | (Tok_Limit x) ->
-            let t' = match_playlist_token toks (Tok_Limit x) in
-            pre_filter#set_limit x;
-            parse_PreAgFilter pre_filter t'
-        | (Tok_Null) ->
-            (* All pre ag filters are parsed, return the fully set object *)
-            let t' = match_playlist_token toks (Tok_Null) in
-            pre_filter, t'
-        | _ -> raise (ParseError "no match on pre ag filter")
+            let t = match_playlist_token toks (Tok_Limit x) in
+            filter#set_limit x;
+            parse_filter_attributes filter t
+        | (Tok_Saved) ->
+            let t = match_playlist_token toks (Tok_Saved) in
+            (* Set to true value *)
+            filter#set_saved "1";
+            parse_filter_attributes filter t
+        | (Tok_Count x) ->
+            let t = match_playlist_token toks (Tok_Count x) in
+            filter#set_count x;
+            parse_filter_attributes filter t
+        | (Tok_Comparator x) ->
+            let t = match_playlist_token toks (Tok_Comparator x) in
+            filter#set_comparator x;
+            parse_filter_attributes filter t
+        | (Tok_Release_Start x) ->
+            let t = match_playlist_token toks (Tok_Release_Start x) in
+            filter#set_release_start x;
+            parse_filter_attributes filter t
+        | (Tok_Release_End x) ->
+            let t = match_playlist_token toks (Tok_Release_End x) in
+            filter#set_release_end x;
+            parse_filter_attributes filter t
+        | (Tok_Filter_End) ->
+            (* All filters tokens are parsed, consume Tok_Filter_End and we're done here. *)
+            match_playlist_token toks (Tok_Filter_End)
+        | _ -> raise (ParseError "no match on tokens which compose a filter")
 
-let rec parse_PostAgFilter post_filter toks = 
+let rec parse_filter toks =
     let l = lookahead toks in
     match l with
-        | (Tok_Saved) ->
-            let t' = match_playlist_token toks (Tok_Saved) in
-            post_filter#set_saved 1;
-            parse_PostAgFilter post_filter t'
-        | (Tok_Count x) ->
-            let t' = match_playlist_token toks (Tok_Count x) in
-            post_filter#set_count x;
-            parse_PostAgFilter post_filter t'
-        | (Tok_Comparator x) ->
-            let t' = match_playlist_token toks (Tok_Comparator x) in
-            post_filter#set_comparator x;
-            parse_PostAgFilter post_filter t'
-        | (Tok_Release_Start x) ->
-            let t' = match_playlist_token toks (Tok_Release_Start x) in
-            post_filter#set_release_start x;
-            parse_PostAgFilter post_filter t'
-        | (Tok_Release_End x) ->
-            let t' = match_playlist_token toks (Tok_Release_End x) in
-            post_filter#set_release_end x;
-            parse_PostAgFilter post_filter t'
-        | (Tok_Null) ->
-            (* All post ag filters are parsed, return the fully set object *)
-            let t' = match_playlist_token toks (Tok_Null) in
-            post_filter, t'
-        | _ -> raise (ParseError "no match on post ag filter")
+        (Tok_Filter) ->
+            let t = match_playlist_token toks Tok_Filter in
+            let f = new filter_cl in
+            let t' = parse_filter_attributes f t in
+            (f, t')
+        | _ -> raise (ParseError "no Tok_Filter token")
 
 let rec parse_playlist_MP toks = 
     let l = lookahead toks in
     match l with
         (Tok_MP) ->
-            let t' = match_playlist_token toks Tok_MP in
-            let p = new pre_ag_filter_cl in
-            let p' = new post_ag_filter_cl in
-            let (pre_filters, t'') = parse_PreAgFilter p t' in
-            let (post_filters, tt') = parse_PostAgFilter p' t'' in
+            let t = match_playlist_token toks Tok_MP in
+            let filter, t' = parse_filter t in
 
-            MP (Filter(pre_filters), Filter(post_filters)), tt'
+            MP (Filter(filter)), t'
 
-        | _ -> raise (ParseError "no Tok_MP before filters begin")
+        | _ -> raise (ParseError "no Tok_MP token")
 
 let rec parse_playlist_And_Not toks = 
     let (e1, t) = parse_playlist_MP toks in

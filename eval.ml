@@ -17,9 +17,9 @@ let rec eval_playlist_expr e songs user_id =
         let s1 = List.fold_right SS.add (eval_playlist_expr x [] user_id) SS.empty in
         let s2 = List.fold_right SS.add (eval_playlist_expr y [] user_id) SS.empty in
         SS.elements (SS.diff s1 s2)
-    | MP(pre,post) ->
-        match pre with
-        Filter(pre_ag_filter_obj) ->
+    | MP(filter) ->
+        match filter with
+        Filter(f) ->
 
           let query = format_of_string "
         SELECT * FROM
@@ -38,6 +38,6 @@ let rec eval_playlist_expr e songs user_id =
         INNER JOIN tracks using (id);
         " in
 
-          let q = Printf.sprintf query user_id (string_of_int pre_ag_filter_obj#get_begin) (string_of_int pre_ag_filter_obj#get_end) in
+          let q = Printf.sprintf query user_id (f#get_time_begin) (f#get_time_end) in
           print_string q;
           ["hi"]

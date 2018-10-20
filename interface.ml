@@ -14,10 +14,7 @@ let print_usage () =
 if Array.length Sys.argv < 2 then begin print_usage (); exit 1 end;;
 
 
-(* Or of two playlists, exercise all supported filter values
- let toks = [Tok_MP; Tok_Begin(1); Tok_End(2); Tok_Null; Tok_Agby("song_id"); Tok_Release_Start(10); Tok_Release_End(50); Tok_Null; Tok_Or; Tok_MP; Tok_Null; Tok_Agby("song_id"); Tok_Saved; Tok_Comparator(1); Tok_Limit(5); Tok_Count(10); Tok_Null; Tok_Null];;
- *)
- let toks = [Tok_MP; Tok_Begin(1); Tok_End(2); Tok_Agby("song_id"); Tok_Limit(5); Tok_Null; Tok_Release_Start(10); Tok_Release_End(50); Tok_Null; Tok_And_Not; Tok_MP; Tok_Agby("song_id"); Tok_Null; Tok_Saved; Tok_Comparator(1); Tok_Count(10); Tok_Null; Tok_Null];;
+ let toks = [Tok_MP; Tok_Filter; Tok_Time_Begin("1"); Tok_Time_End("2"); Tok_Agby("song_id"); Tok_Limit("5"); Tok_Release_Start("10"); Tok_Release_End("50"); Tok_Filter_End; Tok_And_Not; Tok_MP; Tok_Filter; Tok_Agby("song_id"); Tok_Saved; Tok_Comparator("1"); Tok_Count("10"); Tok_Filter_End; Tok_End];;
 
 match Sys.argv.(1) with
 | "lex" ->
