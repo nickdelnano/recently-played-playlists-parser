@@ -93,27 +93,27 @@ let rec parse_filter (toks : playlist_token list) : (filter * playlist_token lis
 let rec parse_playlist_MP (toks : playlist_token list) : (playlist_expr * playlist_token list) =
     let l = lookahead toks in
     match l with
-        (Tok_MP) ->
-            let t = match_playlist_token toks Tok_MP in
+        (Tok_Playlist) ->
+            let t = match_playlist_token toks Tok_Playlist in
             let filter, t' = parse_filter t in
 
-            MP (filter), t'
+            Playlist (filter), t'
 
-        | _ -> raise (ParseError "no Tok_MP token")
+        | _ -> raise (ParseError "no Tok_Playlist token")
 
-let rec parse_playlist_And_Not (toks : playlist_token list) : (playlist_expr * playlist_token list) =
+let rec parse_playlist_Diff (toks : playlist_token list) : (playlist_expr * playlist_token list) =
     let (e1, t) = parse_playlist_MP toks in
     let l = lookahead t in
     match l with 
-        (Tok_And_Not) -> 
-            let t' = match_playlist_token t Tok_And_Not in
-            let (e2, t'') = parse_playlist_And_Not t' in
-            AndNot (e1, e2), t''
+        (Tok_Diff) -> 
+            let t' = match_playlist_token t Tok_Diff in
+            let (e2, t'') = parse_playlist_Diff t' in
+            Playlist_Diff (e1, e2), t''
         | _ -> 
             (e1, t)
 
 let rec parse_playlist_And (toks : playlist_token list) : (playlist_expr * playlist_token list) =
-    let (e1, t) = parse_playlist_And_Not toks in
+    let (e1, t) = parse_playlist_Diff toks in
     let l = lookahead t in
     match l with 
         (Tok_And) -> 

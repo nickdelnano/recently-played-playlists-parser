@@ -14,7 +14,7 @@ let print_usage () =
 if Array.length Sys.argv < 2 then begin print_usage (); exit 1 end;;
 
 
- let toks = [Tok_MP; Tok_Filter; Tok_Time_Begin("1"); Tok_Time_End("2"); Tok_Agby("track_id"); Tok_Limit("5"); Tok_Release_Start("10"); Tok_Release_End("50"); Tok_Filter_End; Tok_And_Not; Tok_MP; Tok_Filter; Tok_Agby("track_id"); Tok_Saved; Tok_Comparator("1"); Tok_Count("10"); Tok_Filter_End; Tok_End];;
+ let toks = [Tok_Playlist; Tok_Filter; Tok_Time_Begin("1"); Tok_Time_End("2"); Tok_Agby("track_id"); Tok_Limit("5"); Tok_Release_Start("10"); Tok_Release_End("50"); Tok_Filter_End; Tok_Diff; Tok_Playlist; Tok_Filter; Tok_Agby("track_id"); Tok_Saved; Tok_Comparator("1"); Tok_Count("10"); Tok_Filter_End; Tok_End];;
 
 
 let username = "ndelnano" in
@@ -30,6 +30,7 @@ match Sys.argv.(1) with
   print_string ("\nRemaining tokens: " ^ (string_of_list ~newline:true string_of_playlist_token leftover_toks));
 
   let playlist = Eval.make_playlist ast username in
+  print_string playlist;
   print_string "done!"
 
 | _ ->

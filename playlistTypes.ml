@@ -3,8 +3,8 @@ exception InvalidInputException of string
 type playlist_token = 
   | Tok_Or
   | Tok_And
-  | Tok_And_Not
-  | Tok_MP
+  | Tok_Diff
+  | Tok_Playlist
   | Tok_Filter
   | Tok_Filter_End
   | Tok_Time_Begin of string
@@ -39,7 +39,7 @@ class filter_cl =
     val mutable saved = ( "0" : string )
     val mutable count = ( "-1" : string )
     (* 0: <, 1: <=, 2: >, 3: >=*)
-    val mutable comparator = ( "0" : string )
+    val mutable comparator = ( "-1" : string )
     (* Earliest UTC*)
     val mutable release_start = ( "0" : string )
     (* Latest UTC -- 11 digits *)
@@ -90,7 +90,8 @@ type filter =
   Filter of filter_cl
 
 type playlist_expr = 
-  | MP of filter
+  | Playlist of filter
   | Playlist_Or of playlist_expr * playlist_expr
   | Playlist_And of playlist_expr * playlist_expr
-  | AndNot of playlist_expr * playlist_expr
+  (* playlist a - playlist b *)
+  | Playlist_Diff of playlist_expr * playlist_expr

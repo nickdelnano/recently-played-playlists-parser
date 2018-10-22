@@ -15,11 +15,11 @@ let rec eval_playlist_expr e songs username =
         let s1 = List.fold_right SS.add (eval_playlist_expr x [] username) SS.empty in
         let s2 = List.fold_right SS.add (eval_playlist_expr y [] username) SS.empty in
         SS.elements (SS.inter s1 s2)
-    | AndNot(x,y) ->
+    | Playlist_Diff(x,y) ->
         let s1 = List.fold_right SS.add (eval_playlist_expr x [] username) SS.empty in
         let s2 = List.fold_right SS.add (eval_playlist_expr y [] username) SS.empty in
         SS.elements (SS.diff s1 s2)
-    | MP(filter) ->
+    | Playlist(filter) ->
         match filter with
         Filter(f) ->
           let resp = call_process_filter_endpoint f username in

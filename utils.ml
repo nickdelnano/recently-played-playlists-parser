@@ -6,8 +6,8 @@ let string_of_list ?newline:(newline=false) (f : 'a -> string) (l : 'a list) : s
 let string_of_playlist_token (t : playlist_token) : string = match t with
   | Tok_Or -> "Tok_Or"
   | Tok_And -> "Tok_And"
-  | Tok_And_Not -> "Tok_And_Not"
-  | Tok_MP -> "Tok_MP"
+  | Tok_Diff -> "Tok_Diff"
+  | Tok_Playlist -> "Tok_Playlist"
   | Tok_Filter -> "Tok_Filter"
   | Tok_Filter_End -> "Tok_Filter_End"
   | Tok_Time_Begin(x) -> "Tok_Time_Begin(" ^ x ^ ")"
@@ -36,12 +36,12 @@ let rec string_of_playlist_expr (e : playlist_expr) : string =
     s ^ "(" ^ string_of_playlist_expr e1 ^ ", " ^ string_of_playlist_expr e2 ^ ")"
   in
   match e with
-  | MP(f) ->
+  | Playlist(f) ->
       let x = unparse_filter f in
       "Playlist of \n(" ^ x ^ "\n)\n"
   | Playlist_Or(x,y) ->
       unparse_two "Or\n\t" x y
   | Playlist_And(x,y) ->
       unparse_two "And\n\t" x y
-  | AndNot(x,y) ->
-      unparse_two "AndNot\n\t" x y
+  | Playlist_Diff(x,y) ->
+      unparse_two "Diff\n\t" x y

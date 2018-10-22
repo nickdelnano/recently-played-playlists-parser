@@ -14,7 +14,7 @@ let process_filter filter username =
           Printf.printf "Response code: %d\n" code;
             Printf.printf "Headers: %s\n" (resp |> Response.headers |> Header.to_string);
               body |> Cohttp_lwt.Body.to_string >|= fun body ->
-                  Printf.printf "Body of length: %d\n" (String.length body);
+                  Printf.printf "Body: %s\n" body;
                     body
 
 let call_process_filter_endpoint f username =
