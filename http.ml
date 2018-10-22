@@ -12,7 +12,6 @@ let process_filter filter username =
     Client.get (Uri.of_string uri) >>= fun (resp, body) ->
         let code = resp |> Response.status |> Code.code_of_status in
           Printf.printf "Response code: %d\n" code;
-            Printf.printf "Headers: %s\n" (resp |> Response.headers |> Header.to_string);
               body |> Cohttp_lwt.Body.to_string >|= fun body ->
                   Printf.printf "Body: %s\n" body;
                     body
