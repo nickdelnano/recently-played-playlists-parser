@@ -8,7 +8,6 @@ let string_of_playlist_token (t : playlist_token) : string = match t with
   | Tok_And -> "Tok_And"
   | Tok_Diff -> "Tok_Diff"
   | Tok_Playlist -> "Tok_Playlist"
-  | Tok_Filter -> "Tok_Filter"
   | Tok_Filter_End -> "Tok_Filter_End"
   | Tok_Time_Begin(x) -> "Tok_Time_Begin(" ^ x ^ ")"
   | Tok_Time_End(x) -> "Tok_Time_End(" ^ x ^ ")"

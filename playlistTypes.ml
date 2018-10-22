@@ -5,7 +5,6 @@ type playlist_token =
   | Tok_And
   | Tok_Diff
   | Tok_Playlist
-  | Tok_Filter
   | Tok_Filter_End
   | Tok_Time_Begin of string
   | Tok_Time_End of string

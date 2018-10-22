@@ -81,16 +81,11 @@ let rec parse_filter_attributes (filter : filter_cl) (toks : playlist_token list
         | _ -> raise (ParseError "no match on tokens which compose a filter")
 
 let rec parse_filter (toks : playlist_token list) : (filter * playlist_token list) =
-    let l = lookahead toks in
-    match l with
-        (Tok_Filter) ->
-            let t = match_playlist_token toks Tok_Filter in
-            let f = new filter_cl in
-            let t' = parse_filter_attributes f t in
-            (Filter(f), t')
-        | _ -> raise (ParseError "no Tok_Filter token")
+    let f = new filter_cl in
+    let t = parse_filter_attributes f toks in
+    (Filter(f), t)
 
-let rec parse_playlist_MP (toks : playlist_token list) : (playlist_expr * playlist_token list) =
+let rec parse_playlist (toks : playlist_token list) : (playlist_expr * playlist_token list) =
     let l = lookahead toks in
     match l with
         (Tok_Playlist) ->
@@ -102,7 +97,7 @@ let rec parse_playlist_MP (toks : playlist_token list) : (playlist_expr * playli
         | _ -> raise (ParseError "no Tok_Playlist token")
 
 let rec parse_playlist_Diff (toks : playlist_token list) : (playlist_expr * playlist_token list) =
-    let (e1, t) = parse_playlist_MP toks in
+    let (e1, t) = parse_playlist toks in
     let l = lookahead t in
     match l with 
         (Tok_Diff) -> 
@@ -125,6 +120,7 @@ let rec parse_playlist_And (toks : playlist_token list) : (playlist_expr * playl
 
 let rec parse_playlist_Or (toks : playlist_token list) : (playlist_expr * playlist_token list) =
     let (e1, t) = parse_playlist_And toks in
+
     let l = lookahead t in
     match l with 
         (Tok_Or) -> 
