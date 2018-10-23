@@ -15,6 +15,7 @@ type playlist_token =
   | Tok_Limit of string
   | Tok_Comparator of string
   | Tok_Saved
+  | Tok_Not_Saved
   | Tok_End
   (* Forcing assocativity not supported, yet. Should be eazy.
   | Tok_RParen
@@ -35,7 +36,7 @@ class filter_cl =
      * or doing something funky by calling out to the php code
      * I already have. *)
     (* 0: false, 1: true*)
-    val mutable saved = ( "0" : string )
+    val mutable saved = ( "-1" : string )
     val mutable count = ( "-1" : string )
     (* 0: <, 1: <=, 2: >, 3: >=*)
     val mutable comparator = ( "-1" : string )

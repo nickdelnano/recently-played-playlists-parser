@@ -17,6 +17,7 @@ let string_of_playlist_token (t : playlist_token) : string = match t with
   | Tok_Count(x) -> "Tok_Count(" ^ x ^ ")"
   | Tok_Comparator(x) -> "Tok_Comparator(" ^ x ^ ")"
   | Tok_Saved -> "Tok_Saved"
+  | Tok_Not_Saved -> "Tok_Not_Saved"
   | Tok_Limit(x) -> "Tok_Limit(" ^ x ^ ")"
   (* TODO: permit forcing assocativity
   | Tok_RParen -> "Tok_RParen"
