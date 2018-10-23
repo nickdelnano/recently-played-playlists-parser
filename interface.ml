@@ -14,7 +14,7 @@ let print_usage () =
 if Array.length Sys.argv < 2 then begin print_usage (); exit 1 end;;
 
 
- let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Agby("track_id"); Tok_Limit("5"); Tok_Release_Start("10"); Tok_Release_End("50"); Tok_Filter_End; Tok_Diff; Tok_Playlist; Tok_Limit("5"); Tok_Agby("track_id"); Tok_Saved; Tok_Comparator("2"); Tok_Count("10"); Tok_Filter_End; Tok_End];;
+ let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Comparator("2"); Tok_Agby("track_id"); Tok_Limit("5"); Tok_Count("10"); Tok_Filter_End; Tok_Or; Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Limit("5"); Tok_Agby("track_id"); Tok_Saved; Tok_Comparator("2"); Tok_Count("10"); Tok_Filter_End; Tok_End];;
 
 
 let username = "nickdelnano@gmail.com" in
@@ -25,13 +25,13 @@ match Sys.argv.(1) with
   print_string @@ string_of_list ~newline:true string_of_playlist_token toks
 | "parse_playlist_expr" ->
   let (ast, leftover_toks) = Parser.parse_playlist_expr toks in
-  print_string @@ string_of_playlist_expr ast;
+
+  (* print_string @@ string_of_playlist_expr ast; *)
 
   print_string ("\nRemaining tokens: " ^ (string_of_list ~newline:true string_of_playlist_token leftover_toks));
 
   let playlist = Eval.make_playlist ast username in
   print_string playlist;
-  print_string "done!"
 
 | _ ->
   raise (InvalidInputException("What are you trying to do?"))
