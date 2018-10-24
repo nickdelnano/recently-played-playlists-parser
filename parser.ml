@@ -54,15 +54,10 @@ let rec parse_filter_attributes (filter : filter_cl) (toks : playlist_token list
             let t = match_playlist_token toks (Tok_Limit x) in
             filter#set_limit x;
             parse_filter_attributes filter t
-        | (Tok_Saved) ->
-            let t = match_playlist_token toks (Tok_Saved) in
+        | (Tok_Saved x) ->
+            let t = match_playlist_token toks (Tok_Saved x) in
             (* Set to true value *)
-            filter#set_saved "1";
-            parse_filter_attributes filter t
-        | (Tok_Not_Saved) ->
-            let t = match_playlist_token toks (Tok_Not_Saved) in
-            (* Set to true value *)
-            filter#set_saved "0";
+            filter#set_saved x;
             parse_filter_attributes filter t
         | (Tok_Count x) ->
             let t = match_playlist_token toks (Tok_Count x) in

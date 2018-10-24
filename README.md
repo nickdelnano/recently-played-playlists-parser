@@ -15,7 +15,7 @@ DiffPlaylist ::= Playlist `&!` DiffPlaylist | Playlist
 
 Playlist ::= `Tok_Playlist` Filter `Tok_Filter_End` | `(` MyCoolPlaylist `)`
 
-Filter ::= `Tok_Time_Begin` | `Tok_Time_End` | `Tok_Agby` | `Tok_Release_Start` | `Tok_Release_End` | `Tok_Count` | `Tok_Limit` | `Tok_Comparator` | `Tok_Saved` | `Tok_Not_Saved`
+Filter ::= `Tok_Time_Begin` | `Tok_Time_End` | `Tok_Agby` | `Tok_Release_Start` | `Tok_Release_End` | `Tok_Count` | `Tok_Limit` | `Tok_Comparator` | `Tok_Saved`
 
 
 // Could definitely ditch Tok_Filter_End, but it makes it easier to detect errors in the parser itself

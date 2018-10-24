@@ -14,8 +14,7 @@ type playlist_token =
   | Tok_Count of string
   | Tok_Limit of string
   | Tok_Comparator of string
-  | Tok_Saved
-  | Tok_Not_Saved
+  | Tok_Saved of string (* 0 is not saved, 1 is saved *)
   | Tok_End
   (* Forcing assocativity not supported, yet. Should be eazy.
   | Tok_RParen
