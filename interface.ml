@@ -19,8 +19,9 @@ if Array.length Sys.argv < 2 then begin print_usage (); exit 1 end;;
 (* top 100 most played, not in library *)
 let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Saved("0"); Tok_Comparator("2"); Tok_Agby("track_id"); Tok_Limit("100"); Tok_Count("1"); Tok_Filter_End; Tok_End];;
 
-
-let username = "ddelnano@gmail.com" in
+let username = "nickdelnano@gmail.com" in
+let playlist_name = "a fun playlist" in
+let description = "my first generated playlist!" in
 
 
 match Sys.argv.(1) with
@@ -33,8 +34,12 @@ match Sys.argv.(1) with
 
   print_string ("\nRemaining tokens: " ^ (string_of_list ~newline:true string_of_playlist_token leftover_toks));
 
-  let playlist = Eval.make_playlist ast username in
-  print_string "\nDone\n!"
+  let track_ids = Eval.make_playlist ast username in
+  let track_ids_csv = String.concat "," track_ids in
+  print_string track_ids_csv;
+  let resp = Http.call_make_playlist_endpoint username playlist_name track_ids_csv description in
+  print_string "Response:";
+  print_string resp;
 
 | _ ->
   raise (InvalidInputException("What are you trying to do?"))

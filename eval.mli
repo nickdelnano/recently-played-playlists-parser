@@ -6,5 +6,4 @@ open Common
  *)
 val eval_playlist_expr: playlist_expr -> string -> SS.t
 
-val make_playlist: playlist_expr -> string -> string
-val call_spotify_make_playlist: string -> 'a list -> string
+val make_playlist: playlist_expr -> string -> string list
