@@ -18,6 +18,8 @@ if Array.length Sys.argv < 2 then begin print_usage (); exit 1 end;;
 
 
 let username = "nickdelnano@gmail.com" in
+let playlist_name = "a fun playlist" in
+let description = "my first generated playlist!" in
 
 
 match Sys.argv.(1) with
@@ -30,8 +32,12 @@ match Sys.argv.(1) with
 
   print_string ("\nRemaining tokens: " ^ (string_of_list ~newline:true string_of_playlist_token leftover_toks));
 
-  let playlist = Eval.make_playlist ast username in
-  print_string playlist;
+  let track_ids = Eval.make_playlist ast username in
+  let track_ids_csv = String.concat "," track_ids in
+  print_string track_ids_csv;
+  let resp = Http.call_make_playlist_endpoint username playlist_name track_ids_csv description in
+  print_string "Response:";
+  print_string resp;
 
 | _ ->
   raise (InvalidInputException("What are you trying to do?"))
