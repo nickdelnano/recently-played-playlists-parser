@@ -7,10 +7,6 @@ TODO: Using sets like this won't preserve order on things like most played. To d
 -- Not sure if forcing this ordering is worth it.
 *)
 
-let rec print_list = function 
-[] -> ()
-| e::l -> print_string e ; print_string " " ; print_list l
-
 let rec eval_playlist_expr e username =
     match e with
     | Playlist_Or(x,y) ->
@@ -26,11 +22,11 @@ let rec eval_playlist_expr e username =
         let s2 = eval_playlist_expr y username in
         SS.diff s1 s2
     | Playlist(filter) ->
-        match filter with
+        (match filter with
         Filter(f) ->
-          let resp = Http.call_process_filter_endpoint f username in
-          let song_ids = Str.split (Str.regexp ",") resp in
-          List.fold_right SS.add song_ids SS.empty
+            let resp = Http.call_process_filter_endpoint f username in
+            let song_ids = Str.split (Str.regexp ",") resp in
+            List.fold_right SS.add song_ids SS.empty)
 
 let set_elements_to_list ele lst =
     ele::lst
