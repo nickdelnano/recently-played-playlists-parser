@@ -1,4 +1,4 @@
-## This is in mega work in progress state!!!
+# This is in mega work in progress state!!!
 
 ## Installing and running
 You'll need opam and ocamlbuild. Install the dependencies in deps via:
