@@ -41,8 +41,8 @@ Literally anything! I'm always thinking about new playlist ideas too, please sha
 ## Artists
 - Playlist with songs from top listened artists
 ## Play density
-- Playlist of songs that have been played 2x 2x in any week.
-  - This is probably too complicated and compute intensive to do, at least with the current implementation of using MySQL in recenrly-played-playlists
+- Playlist of songs that have been played 2x in any week from time period X to time period Y.
+  - This is probably too complicated and compute intensive to do, at least with the current implementation of using MySQL in recently-played-playlists
 ## Genre
 - This would be awesome! However, I've seen in practice that Spotify's genre tagging is very poor for electronic music, which is what I care the most about. Maybe it would work better for popular music.
 
