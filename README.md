@@ -30,3 +30,23 @@ Filter ::= `Tok_Time_Begin` | `Tok_Time_End` | `Tok_Agby` | `Tok_Release_Start` 
 
 
 Could definitely ditch Tok_Filter_End, but expecting this token makes the code a bit cleaner
+
+# What other kind of parsing could be done??
+Literally anything! I'm always thinking about new playlist ideas too, please share any interesting ones! Here's what I've come up with:
+## Album-wise
+- Playlist containing most played all albums
+- Playlist containing all albums for which all tracks have been played, X times
+## Spotify's ['Audio Features'](https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/)
+- High energy songs, songs with high 'danceability', similar tempo
+## Artists
+- Playlist with songs from top listened artists
+## Play density
+- Playlist of songs that have been played 2x 2x in any week.
+  - This is probably too complicated and compute intensive to do, at least with the current implementation of using MySQL in recenrly-played-playlists
+## Genre
+- This would be awesome! However, I've seen in practice that Spotify's genre tagging is very poor for electronic music, which is what I care the most about. Maybe it would work better for popular music.
+
+
+# Other possible functionalities
+- Compare listening histories with friends -- do I listen to more Bon Jovi than Mike?
+- Graph visualizations of listening histories
