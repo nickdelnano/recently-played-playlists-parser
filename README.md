@@ -1,5 +1,3 @@
-# This is in mega work in progress state!!!
-
 ## Installing and running
 You'll need opam and ocamlbuild. Install the dependencies in deps via:
 
@@ -50,3 +48,6 @@ Literally anything! I'm always thinking about new playlist ideas too, please sha
 # Other possible functionalities
 - Compare listening histories with friends -- do I listen to more Bon Jovi than Mike?
 - Graph visualizations of listening histories
+
+# TODO
+- properly package with opam so [recently-played-playlists-puppet](github.com/ndelnano/recently-played-playlists-puppet) can install it.
