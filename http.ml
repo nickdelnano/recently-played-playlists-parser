@@ -2,11 +2,6 @@ open Lwt
 open Cohttp
 open Cohttp_lwt_unix
 
-(*
-* TODO: Need to escape url parameters.....I've found nothing about this in
-* the cohttp library :/ 
-*)
-
 let base_url = "http://localhost:5000";;
 
 (* /process_filter functions *)

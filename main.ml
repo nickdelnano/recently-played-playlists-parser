@@ -11,23 +11,20 @@ let playlist_name = "a fun playlist" in
 let description = "my first generated playlist!" in
 
 
-match Sys.argv.(1) with
-| "lex" ->
-  print_string @@ string_of_list ~newline:true string_of_playlist_token toks
-| "parse_playlist_expr" ->
+let make_playlist (username : string) (playlist_name  : string) (description : string) (tokens : playlist_token list) : string = 
   let (ast, leftover_toks) = Parser.parse_playlist_expr toks in
-
-  (* print_string @@ string_of_playlist_expr ast; *)
 
   print_string ("\nRemaining tokens: " ^ (string_of_list ~newline:true string_of_playlist_token leftover_toks));
 
   let track_ids = Eval.make_playlist ast username in
-  let track_ids_csv = String.concat "," track_ids in
-  print_string track_ids_csv;
-  let resp = Http.call_make_playlist_endpoint username playlist_name track_ids_csv description in
-  print_string "Response:";
-  print_string resp;
 
-| _ ->
-  raise (InvalidInputException("What are you trying to do?"))
-;;
+  let track_ids_csv = String.concat "," track_ids in
+
+  let resp = Http.call_make_playlist_endpoint username playlist_name track_ids_csv description in
+
+  print_string "Response:";
+  print_string resp
+  
+  resp
+
+make_playlist username playlist_name description toks;;

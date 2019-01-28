@@ -3,14 +3,14 @@ OCAMLBUILD = ocamlbuild
 SOURCES = parser.ml utils.ml playlistTypes.ml http.ml
 TEST_SOURCES = tests/parser_test.ml
 
-INTERFACE_RESULT = interface.byte
+MAIN_RESULT = main.byte
 TEST_RESULT = tests/parser_test.byte
 
 OCAMLLDFLAGS = -g
 PACKS = str,yojson,cohttp-lwt-unix
 TEST_PACKS = oUnit
 
-all: $(TEST_RESULT) $(INTERFACE_RESULT)
+all: $(TEST_RESULT) $(MAIN_RESULT)
 
 clean:
 	rm -f *.byte
@@ -20,12 +20,12 @@ clean:
 	rm -r _build
 	$(OCAMLBUILD) -clean
 
-interface: $(INTERFACE_RESULT)
+main: $(MAIN_RESULT)
 
 test: $(TEST_RESULT)
 
-$(INTERFACE_RESULT): $(SOURCES) interface.ml eval.ml
-	$(OCAMLBUILD) $(INTERFACE_RESULT) -pkgs $(PACKS)
+$(MAIN_RESULT): $(SOURCES) main.ml eval.ml
+	$(OCAMLBUILD) $(MAIN_RESULT) -pkgs $(PACKS)
 
 $(TEST_RESULT): $(SOURCES) $(TEST_SOURCES)
 	$(OCAMLBUILD) $(TEST_RESULT) -pkgs $(TEST_PACKS)
