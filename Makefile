@@ -7,7 +7,7 @@ MAIN_RESULT = main.byte
 TEST_RESULT = tests/parser_test.byte
 
 OCAMLLDFLAGS = -g
-PACKS = str,yojson,cohttp-lwt-unix
+PACKS = str,cohttp-lwt-unix
 TEST_PACKS = oUnit
 
 all: $(TEST_RESULT) $(MAIN_RESULT)

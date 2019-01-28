@@ -1,0 +1,29 @@
+opam-version: "2.0"
+name: "recently-played-playlists-paser"
+version: "1.0.0"
+synopsis: "Parser for making generic, recursive Spotify playlists."
+description: """
+Like Spotify's 'Year in Review' playlists, but (limitlessly) customizable!
+Used in combination with github.com/ndelnano/recently-played-playlists.
+"""
+maintainer: "nickdelnano@gmail.com"
+authors: "nickdelnano@gmail.com"
+license: "MIT"
+homepage: "github.com/ndelnano/recently-played-playlists-parser"
+bug-reports: "github.com/ndelnano/recently-played-playlists-parser/issues"
+dev-repo: ""
+depends: [ 
+    "ocaml" 
+    "ocamlfind" 
+    "ocamlbuild" 
+    "cohttp" 
+    "lwt" 
+    "tls" 
+    "cohttp-lwt-unix" 
+    "ounit" 
+]
+build: [
+  ["./configure" "--prefix=%{prefix}%"]
+    [make]
+    ]
+    install: [make "install"]

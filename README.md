@@ -49,4 +49,4 @@ Literally anything! I'm always thinking about new playlist ideas too, please sha
 
 # Other possible functionalities
 - Compare listening histories with friends -- do I listen to more Bon Jovi than Mike?
-- Graph visualizations of listening histories
+- Graphical visualizations of listening histories
