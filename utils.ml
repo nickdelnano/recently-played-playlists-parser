@@ -1,5 +1,21 @@
 open PlaylistTypes
 
+let make_playlist (username : string) (playlist_name  : string) (description : string) (tokens : playlist_token list) : string = 
+  let (ast, leftover_toks) = Parser.parse_playlist_expr tokens in
+
+  print_string ("\nRemaining tokens: " ^ (string_of_list ~newline:true string_of_playlist_token leftover_toks));
+
+  let track_ids = Eval.make_playlist ast username in
+
+  let track_ids_csv = String.concat "," track_ids in
+
+  let resp = Http.call_make_playlist_endpoint username playlist_name track_ids_csv description in
+
+  print_string "Response:";
+  print_string resp
+  
+  resp
+
 let string_of_list ?newline:(newline=false) (f : 'a -> string) (l : 'a list) : string =
     "[" ^ (String.concat ", " @@ List.map f l) ^ "]" ^ (if newline then "\n" else "");;
 
