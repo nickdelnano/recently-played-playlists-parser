@@ -12,7 +12,7 @@ let get_process_filter filter username =
     let uri = build_process_filter_uri filter username in
     Client.get (Uri.of_string uri) >>= fun (resp, body) ->
         let code = resp |> Response.status |> Code.code_of_status in
-          Printf.printf "Response code: %d\n" code;
+          Printf.printf "Response code from /process_filter: %d\n" code;
               body |> Cohttp_lwt.Body.to_string >|= fun body ->
                     body
 
@@ -27,7 +27,7 @@ let post_make_playlist username playlist_name track_ids description =
     let uri = build_make_playlist_uri username playlist_name description in
     Client.post (Uri.of_string uri) ~body:(Cohttp_lwt__Body.of_string track_ids) >>= fun (resp, body) ->
         let code = resp |> Response.status |> Code.code_of_status in
-        Printf.printf "Response code: %d\n" code;
+        Printf.printf "Response code from /make_playlist: %d\n" code;
               body |> Cohttp_lwt.Body.to_string >|= fun body ->
                     body
 
