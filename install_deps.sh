@@ -1,2 +1,2 @@
 #!/bin/bash
-opam install ocamlbuild cohttp lwt tls cohttp-lwt-unix yojson ounit --root /home/ndelnano
+opam install ocamlfind ocamlbuild cohttp lwt tls cohttp-lwt-unix ounit --root /home/ndelnano

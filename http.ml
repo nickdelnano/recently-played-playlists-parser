@@ -1,6 +1,6 @@
-open Lwt
 open Cohttp
 open Cohttp_lwt_unix
+open Lwt
 
 let base_url = "http://localhost:5000";;
 

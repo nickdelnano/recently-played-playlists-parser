@@ -7,8 +7,8 @@ MAIN_RESULT = main.byte
 TEST_RESULT = tests/parser_test.byte
 
 OCAMLLDFLAGS = -g
-PACKS = str,yojson,cohttp-lwt-unix
-TEST_PACKS = oUnit
+PACKS = str,cohttp,cohttp-lwt-unix
+TEST_PACKS = oUnit,cohttp,cohttp-lwt-unix
 
 all: $(TEST_RESULT) $(MAIN_RESULT)
 
@@ -29,3 +29,4 @@ $(MAIN_RESULT): $(SOURCES) main.ml eval.ml
 
 $(TEST_RESULT): $(SOURCES) $(TEST_SOURCES)
 	$(OCAMLBUILD) $(TEST_RESULT) -pkgs $(TEST_PACKS)
+	./parser_test.byte
