@@ -11,10 +11,11 @@ type playlist_token =
   | Tok_Agby of string
   | Tok_Release_Start of string
   | Tok_Release_End of string
-  | Tok_Count of string
-  | Tok_Limit of string
-  | Tok_Comparator of string
-  | Tok_Saved of string (* 0 is not saved, 1 is saved *)
+  | Tok_Count of int (* If set, must be > 0. *)
+  | Tok_Comparator of int (* If set, must be [0,3].
+  0 - <, 1 - <=, 2 - >, 3 - >=. Works in combination with`Tok_Count`.*)
+  | Tok_Saved of int (* If set, must be [0,1]. 0 is not saved, 1 is saved. *)
+  | Tok_Limit of int (* If set, must be > 0. *)
   | Tok_End
   (* Forcing assocativity not supported, yet. Should be eazy.
   | Tok_RParen
@@ -29,16 +30,12 @@ class filter_cl =
     val mutable time_end = ( "99999999999" : string )
     (* Only track_id for now *)
     val mutable agby = ( "track_id" : string )
-    val mutable limit = ( "-1" : string )
-    (* saved won't be implemented until I figure out
-     * how I want to handle implementing spotify api client in ocaml
-     * or doing something funky by calling out to the php code
-     * I already have. *)
-    (* 0: false, 1: true*)
-    val mutable saved = ( "-1" : string )
-    val mutable count = ( "-1" : string )
+    val mutable limit = ( -1 : int )
+    (* 0: false, 1: true *)
+    val mutable saved = ( -1 : int )
+    val mutable count = ( -1 : int )
     (* 0: <, 1: <=, 2: >, 3: >=*)
-    val mutable comparator = ( "-1" : string )
+    val mutable comparator = ( -1 : int )
     (* Earliest UTC*)
     val mutable release_start = ( "0" : string )
     (* Latest UTC -- 11 digits *)
@@ -51,13 +48,13 @@ class filter_cl =
       time_end
     method get_agby : string = 
       agby
-    method get_limit : string = 
+    method get_limit : int = 
       limit
-    method get_saved : string = 
+    method get_saved : int = 
       saved
-    method get_count : string = 
+    method get_count : int = 
       count
-    method get_comparator : string = 
+    method get_comparator : int = 
       comparator
     method get_release_start : string = 
       release_start

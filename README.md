@@ -51,3 +51,9 @@ Literally anything! I'm always thinking about new playlist ideas too, please sha
 
 # TODO
 - properly package with opam so [recently-played-playlists-puppet](github.com/ndelnano/recently-played-playlists-puppet) can install it.
+- Add '(' and ')' tokens to allow enforcing associativity
+
+# Running the tests
+TODO
+
+# TODO how to understand the code

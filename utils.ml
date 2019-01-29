@@ -11,10 +11,10 @@ let string_of_playlist_token (t : playlist_token) : string = match t with
   | Tok_Agby(x) -> "Tok_Agby(" ^ x ^ ")"
   | Tok_Release_Start(x) -> "Tok_Release_Start(" ^ x ^ ")"
   | Tok_Release_End(x) -> "Tok_Release_End(" ^ x ^ ")"
-  | Tok_Count(x) -> "Tok_Count(" ^ x ^ ")"
-  | Tok_Comparator(x) -> "Tok_Comparator(" ^ x ^ ")"
-  | Tok_Saved(x) -> "Tok_Saved(" ^ x ^ ")"
-  | Tok_Limit(x) -> "Tok_Limit(" ^ x ^ ")"
+  | Tok_Count(x) -> "Tok_Count(" ^ string_of_int x ^ ")"
+  | Tok_Comparator(x) -> "Tok_Comparator(" ^ string_of_int x ^ ")"
+  | Tok_Saved(x) -> "Tok_Saved(" ^ string_of_int x ^ ")"
+  | Tok_Limit(x) -> "Tok_Limit(" ^ string_of_int x ^ ")"
   (* TODO: permit forcing assocativity
   | Tok_RParen -> "Tok_RParen"
   | Tok_LParen -> "Tok_LParen"
@@ -28,7 +28,7 @@ let string_of_list ?newline:(newline=false) (f : 'a -> string) (l : 'a list) : s
 let rec unparse_filter (x: filter) : string = 
   match x with
   | Filter(p) ->
-      "Begin: " ^ p#get_time_begin ^ "\nEnd: " ^ p#get_time_end ^ "\nAgby: " ^ p#get_agby ^ "\nLimit: " ^ p#get_limit ^ "\nSaved: " ^ p#get_saved ^ "\nCount: " ^ p#get_count ^ "\nComparator " ^ p#get_comparator ^ "\nRelease start: " ^ p#get_release_start ^ "\nRelease end: " ^ p#get_release_end
+      "Begin: " ^ p#get_time_begin ^ "\nEnd: " ^ p#get_time_end ^ "\nAgby: " ^ p#get_agby ^ "\nLimit: " ^ (string_of_int p#get_limit) ^ "\nSaved: " ^ (string_of_int p#get_saved) ^ "\nCount: " ^ (string_of_int p#get_count) ^ "\nComparator " ^ (string_of_int p#get_comparator) ^ "\nRelease start: " ^ p#get_release_start ^ "\nRelease end: " ^ p#get_release_end
 
 let rec string_of_playlist_expr (e : playlist_expr) : string =
   let unparse_two (s : string) (e1 : playlist_expr) (e2 : playlist_expr) =

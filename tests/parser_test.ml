@@ -9,10 +9,10 @@ let test_parse_simple_playlist_with_all_filter_attributes_set ctxt =
     let time_begin = "100000000" in
     let time_end = "200000000" in
     let agby = "track_id" in
-    let limit = "100" in
-    let saved = "0" in
-    let count = "5" in
-    let comparator = "3" in
+    let limit = 100 in
+    let saved = 0 in
+    let count = 5 in
+    let comparator = 3 in
     let rel_start = "300000000" in
     let rel_end = "400000000" in
 
@@ -45,10 +45,10 @@ let test_parse_and_playlist_with_all_filter_attributes_set ctxt =
     let time_begin = "100000000" in
     let time_end = "200000000" in
     let agby = "track_id" in
-    let limit = "100" in
-    let saved = "0" in
-    let count = "5" in
-    let comparator = "3" in
+    let limit = 100 in
+    let saved = 0 in
+    let count = 5 in
+    let comparator = 3 in
     let rel_start = "300000000" in
     let rel_end = "400000000" in
 
@@ -56,10 +56,10 @@ let test_parse_and_playlist_with_all_filter_attributes_set ctxt =
     let time_end1 = "300000000" in
     (* album_id isn't supported, this exists to be different than the other playlists's agby *)
     let agby1 = "album_id" in
-    let limit1 = "200" in
-    let saved1 = "1" in
-    let count1 = "6" in
-    let comparator1 = "4" in
+    let limit1 = 200 in
+    let saved1 = 1 in
+    let count1 = 6 in
+    let comparator1 = 3 in
     let rel_start1 = "400000000" in
     let rel_end1 = "500000000" in
 
@@ -120,10 +120,10 @@ let test_parse_or_playlist_with_all_filter_attributes_set ctxt =
     let time_begin = "100000000" in
     let time_end = "200000000" in
     let agby = "track_id" in
-    let limit = "100" in
-    let saved = "0" in
-    let count = "5" in
-    let comparator = "3" in
+    let limit = 100 in
+    let saved = 0 in
+    let count = 5 in
+    let comparator = 3 in
     let rel_start = "300000000" in
     let rel_end = "400000000" in
 
@@ -131,10 +131,10 @@ let test_parse_or_playlist_with_all_filter_attributes_set ctxt =
     let time_end1 = "300000000" in
     (* album_id isn't supported, this exists to be different than the other playlists's agby *)
     let agby1 = "album_id" in
-    let limit1 = "200" in
-    let saved1 = "1" in
-    let count1 = "6" in
-    let comparator1 = "4" in
+    let limit1 = 200 in
+    let saved1 = 1 in
+    let count1 = 6 in
+    let comparator1 = 3 in
     let rel_start1 = "400000000" in
     let rel_end1 = "500000000" in
 
@@ -195,10 +195,10 @@ let test_parse_diff_playlist_with_all_filter_attributes_set ctxt =
     let time_begin = "100000000" in
     let time_end = "200000000" in
     let agby = "track_id" in
-    let limit = "100" in
-    let saved = "0" in
-    let count = "5" in
-    let comparator = "3" in
+    let limit = 100 in
+    let saved = 0 in
+    let count = 5 in
+    let comparator = 3 in
     let rel_start = "300000000" in
     let rel_end = "400000000" in
 
@@ -206,10 +206,10 @@ let test_parse_diff_playlist_with_all_filter_attributes_set ctxt =
     let time_end1 = "300000000" in
     (* album_id isn't supported, this exists to be different than the other playlists's agby *)
     let agby1 = "album_id" in
-    let limit1 = "200" in
-    let saved1 = "1" in
-    let count1 = "6" in
-    let comparator1 = "4" in
+    let limit1 = 200 in
+    let saved1 = 1 in
+    let count1 = 6 in
+    let comparator1 = 3 in
     let rel_start1 = "400000000" in
     let rel_end1 = "500000000" in
 

@@ -29,4 +29,3 @@ $(MAIN_RESULT): $(SOURCES) main.ml eval.ml
 
 $(TEST_RESULT): $(SOURCES) $(TEST_SOURCES)
 	$(OCAMLBUILD) $(TEST_RESULT) -pkgs $(TEST_PACKS)
-	./parser_test.byte

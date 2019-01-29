@@ -6,7 +6,7 @@ let base_url = "http://localhost:5000";;
 
 (* /process_filter functions *)
 let build_process_filter_uri f username =
-    Printf.sprintf "%s/process_filter?username=%s&time_begin=%s&time_end=%s&agby=%s&limit=%s&saved=%s&count=%s&comparator=%s&release_start=%s&release_end=%s" base_url username f#get_time_begin f#get_time_end f#get_agby f#get_limit f#get_saved f#get_count f#get_comparator f#get_release_start f#get_release_end
+    Printf.sprintf "%s/process_filter?username=%s&time_begin=%s&time_end=%s&agby=%s&limit=%s&saved=%s&count=%s&comparator=%s&release_start=%s&release_end=%s" base_url username f#get_time_begin f#get_time_end f#get_agby (string_of_int f#get_limit) (string_of_int f#get_saved) (string_of_int f#get_count) (string_of_int f#get_comparator) f#get_release_start f#get_release_end
 
 let get_process_filter filter username =
     let uri = build_process_filter_uri filter username in

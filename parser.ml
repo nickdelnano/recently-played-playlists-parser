@@ -1,6 +1,7 @@
 open PlaylistTypes
 open Utils
 exception ParseError of string
+exception InvalidValueForFilter of string
 
 (* The functions in this file read bottom to top as I didn't want to use
  * mutual recursion (for no reason other than I forget its limitations/use case.
@@ -26,7 +27,7 @@ let lookahead toks =
   | h::_ -> h
 
 (* --This function relies on setting state in the filter object--
- * Parses toks until TOK_NULL is reached.
+ * Parses toks until TOK_FILTER_END is reached.
  * Sets filter object set with data from each parsed token.
  * Returns list of toks yet to be consumed.
  *)
@@ -52,21 +53,32 @@ let rec parse_filter_attributes (filter : filter_cl) (toks : playlist_token list
             parse_filter_attributes filter t
         | (Tok_Limit x) ->
             let t = match_playlist_token toks (Tok_Limit x) in
-            filter#set_limit x;
-            parse_filter_attributes filter t
+            if x > 0 then begin
+                filter#set_limit x;
+                parse_filter_attributes filter t
+                end
+            else raise (InvalidValueForFilter("Limit must be > 0."))
         | (Tok_Saved x) ->
             let t = match_playlist_token toks (Tok_Saved x) in
-            (* Set to true value *)
-            filter#set_saved x;
-            parse_filter_attributes filter t
+            if x == 0 || x == 1 then begin
+                filter#set_saved x;
+                parse_filter_attributes filter t
+                end
+            else raise (InvalidValueForFilter("Saved must be 0 or 1."))
         | (Tok_Count x) ->
             let t = match_playlist_token toks (Tok_Count x) in
-            filter#set_count x;
-            parse_filter_attributes filter t
+            if x > 0 then begin
+                filter#set_count x;
+                parse_filter_attributes filter t
+                end
+            else raise (InvalidValueForFilter("Count must be > 0."))
         | (Tok_Comparator x) ->
             let t = match_playlist_token toks (Tok_Comparator x) in
-            filter#set_comparator x;
-            parse_filter_attributes filter t
+            if x >= 0 && x <= 3 then begin
+                filter#set_comparator x;
+                parse_filter_attributes filter t
+                end
+            else raise (InvalidValueForFilter("Comparator must be [0,3]."))
         | (Tok_Release_Start x) ->
             let t = match_playlist_token toks (Tok_Release_Start x) in
             filter#set_release_start x;

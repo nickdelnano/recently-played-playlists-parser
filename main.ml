@@ -17,10 +17,10 @@ let make_playlist (username : string) (playlist_name  : string) (description : s
   
   resp
 ;;
-(* let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Comparator("2"); Tok_Agby("track_id"); Tok_Limit("5"); Tok_Count("100"); Tok_Filter_End; Tok_Or; Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Limit("5"); Tok_Agby("track_id"); Tok_Saved; Tok_Comparator("2"); Tok_Count("10"); Tok_Filter_End; Tok_End];; *)
+(* let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Comparator("2"); Tok_Agby("track_id"); Tok_Limit(5); Tok_Count(100); Tok_Filter_End; Tok_Or; Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Limit("5"); Tok_Agby("track_id"); Tok_Saved(1); Tok_Comparator(2); Tok_Count(10); Tok_Filter_End; Tok_End];; *)
 
 (* top 100 most played, not in library *)
-let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Comparator("2"); Tok_Agby("track_id"); Tok_Limit("100"); Tok_Count("1"); Tok_Filter_End; Tok_End];;
+let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Comparator(2); Tok_Agby("track_id"); Tok_Limit(100); Tok_Count(1); Tok_Filter_End; Tok_End];;
 
 let username = "test_user" in
 let playlist_name = "bla" in
