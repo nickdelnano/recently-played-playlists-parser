@@ -49,6 +49,8 @@ class filter_cl =
     (* Latest UTC -- 11 digits *)
     val mutable release_end = ( "99999999999" : string )
 
+    (* release_start and release_end are not supported in the HTTP API yet! *)
+
 ```
 
 The `filter_cl` class and its attributes map directly to 1 SQL query. When a `playlist_expr` is evaluated and the `Playlist` type is reached (at the deepest level of parsing the AST), an HTTP request is sent to [recently-played-playlists](https://github.com/ndelnano/recently-played-playlists), and a SQL query is constructed and evaluated, returning the matching results. See [here](https://github.com/ndelnano/recently-played-playlists#where-is-the-magic) for how the SQL query is constructed.
@@ -126,6 +128,105 @@ Filter ::= `Tok_Time_Begin` | `Tok_Time_End` | `Tok_Agby` | `Tok_Release_Start` 
 
 I only have very "top-level" tests for the parser. I sleep well at night due to ocaml's type system and "believing in the recursion".
 
+## Show me a damn example
+You can use any of the fields documented above in the `filter_cl` class.
+
+Here's a simple playlist: Top 100 most played of all time
+
+```
+let toks = [Tok_Playlist; Tok_Comparator(2); Tok_Count(1); Tok_Limit(100); Tok_Filter_End; Tok_End];;
+
+let username = "test_user" in
+let playlist_name = "bla" in
+let description = "my first generated playlist!" in
+
+make_playlist username playlist_name description toks
+```
+
+The playlist would be turned into this SQL query:
+```
+SELECT spotify_id FROM
+    (
+        SELECT
+            COUNT(*) as num_plays,
+            track_id as id
+        FROM songs_played
+            WHERE
+                user_id={user_id}
+                AND played_at > 0
+                AND played_at < 99999999999
+            GROUP BY track_id
+    ) t1
+    INNER JOIN tracks using (id)
+WHERE num_plays > 1 ORDER BY num_plays DESC LIMIT 100
+```
+
+Another example: 50 most played songs between Jan 1 2017 - Jan 1 2018, that are not saved in your library -- maybe you wish these were in your library, but you have forgotten to add them!
+```
+let toks = [Tok_Playlist; Tok_Time_Begin("1483272000"); Tok_Time_End("1514808000"); Tok_Saved(0); Tok_Comparator(2); Tok_Count(1); Tok_Limit(50); Tok_Filter_End; Tok_End];;
+```
+
+Corresponding SQL query:
+```
+SELECT spotify_id FROM
+    (
+        SELECT
+            COUNT(*) as num_plays,
+            track_id as id
+        FROM songs_played
+            WHERE
+                user_id={user_id}
+                AND played_at > 1483272000
+                AND played_at < 1514808000
+            GROUP BY track_id
+    ) t1
+    INNER JOIN tracks using (id)
+WHERE num_plays > 1 ORDER BY num_plays DESC LIMIT 50
+```
+But! Since membership in your library is dynamic, a call to the Spotify API checks if any of these songs are in your library, and filters out any that are.
+
+Last one -- let's compose multiple playlists: (100 most played from Jan 1 2016 - Jan 1 2017) AND (Tracks played < 4 times between Jan 1 2017 - Jan 1 2018) -- Your favorite tracks from 2016, that went out of style very quickly!
+
+```
+let toks = [Tok_Playlist; Tok_Time_Begin("1451649600"); Tok_Time_End("1483272000"); Tok_Comparator(2); Tok_Count(1); Tok_Limit(100); Tok_Filter_End; Tok_And; Tok_Playlist; Tok_Time_Begin("1483272000"); Tok_Time_End("1514808000"); Tok_Comparator(0); Tok_Count(2); Tok_Filter_End; Tok_End];;
+```
+
+Corresponding SQL queries:
+```
+SELECT spotify_id FROM
+    (
+        SELECT
+            COUNT(*) as num_plays,
+            track_id as id
+        FROM songs_played
+            WHERE
+                user_id={user_id}
+                AND played_at > 1451649600
+                AND played_at < 1483272000
+            GROUP BY track_id
+    ) t1
+    INNER JOIN tracks using (id)
+WHERE num_plays > 1 ORDER BY num_plays DESC LIMIT 100
+
+SELECT spotify_id FROM
+    (
+        SELECT
+            COUNT(*) as num_plays,
+            track_id as id
+        FROM songs_played
+            WHERE
+                user_id={user_id}
+                AND played_at > 1483272000
+                AND played_at < 1514808000
+            GROUP BY track_id
+    ) t1
+    INNER JOIN tracks using (id)
+WHERE num_plays < 2 ORDER BY num_plays ASC
+```
+These results will be merged with the logical AND in ocaml.
+
+Hopefully you now have a good idea how this works.
+
 ## This is neat, why do I have to construct a token list directly instead of using a fancy UI?
 I'd love a nice UI for playlist construction. There's two reasons:
 - I think a UI that would only allow construction of valid playlists would be very tedious to make. I think the user would still have to understand what playlist structures are and are not supported, and would have to understand the grammar anyway.
@@ -156,4 +257,4 @@ Some are easier to implement than others. I picked the initial set of features t
 
 ## TODO
 - properly package with opam so [recently-played-playlists-puppet](github.com/ndelnano/recently-played-playlists-puppet) can install it.
-- Add '(' and ')' tokens to allow enforcing associativity
+- Implement 'Tok_LParen' and 'Tok_RParen' tokens in parser to allow enforcement of associativity
