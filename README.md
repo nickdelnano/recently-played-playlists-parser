@@ -1,3 +1,4 @@
+## Inspiration and "why"
 In 2017 and 2018, Spotify [curated a playlist for each user with their most played tracks of the year](https://community.spotify.com/t5/Community-Blog/Your-2018-Wrapped/ba-p/4625551). In 2017 when I got the my first "most played" playlist, I thought it was super cool! I also saw many of my friends were eager to share this data on social media. 
 
 In the next few days, I wondered how I could make my own "most played of the year" playlist. I also didn't want to wait an entire year to get the data -- why not a "most played of the month" playlist? And why does it have to be "most" played -- what if I wanted a "least" played playlist?
