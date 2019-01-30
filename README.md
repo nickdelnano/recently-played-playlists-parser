@@ -2,7 +2,7 @@ In 2017 and 2018, Spotify [curated a playlist for each user with their most play
 
 In the next few days, I wondered how I could make my own "most played of the year" playlist. I also didn't want to wait an entire year to get the data -- why not a "most played of the month" playlist? And why does it have to be "most" played -- what if I wanted a "least" played playlist?
 
-I thought of building a project that would allow you to create any playlist you could dream up, using any data attributes about a song or your listening habits.
+I thought of building a project that would allow you to create any playlist you could dream up, using any data attributes about a song or any pattern in your listening habits.
 
 A bit later, I thought about creating a grammar to define a "playlist", so that a single playlist could be composed of infinitely many playlists. 
 
@@ -263,6 +263,8 @@ I'd have to do some investigation to determine how accurate these attributes are
   - Could be done easily if you deem a week to be Sunday-Saturday, but searching for every "1 week period" would be complicated and computationally intensive.
 ## Genre
 - This would be awesome! However, I've seen in practice that Spotify's genre tagging is very poor for electronic music, which is what I care the most about. Maybe it would work better for popular music.
+## Time of day / Day of week
+- Allow any existing filtering, but restrict the tracks that are selected by time of day or day of week. Perhaps you want to filter only for tracks that were played in the morning, or for tracks that were played on the weekend.
 
 Some are easier to implement than others. I picked the initial set of features to maximize utility and ease of implementation. Beyond the utility of having unique playlists, I thought this was an interesting proof of concept to investigate.
 
