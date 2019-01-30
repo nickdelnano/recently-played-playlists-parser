@@ -17,11 +17,16 @@ let make_playlist (username : string) (playlist_name  : string) (description : s
   
   resp
 ;;
-(* let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Comparator("2"); Tok_Agby("track_id"); Tok_Limit(5); Tok_Count(100); Tok_Filter_End; Tok_Or; Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Limit("5"); Tok_Agby("track_id"); Tok_Saved(1); Tok_Comparator(2); Tok_Count(10); Tok_Filter_End; Tok_End];; *)
 
-(* top 100 most played, not in library *)
-let toks = [Tok_Playlist; Tok_Time_Begin("1"); Tok_Time_End("99999999999"); Tok_Comparator(2); Tok_Agby("track_id"); Tok_Limit(100); Tok_Count(1); Tok_Filter_End; Tok_End];;
+(*
+(100 most played from Jan 1 2016 - Jan 1 2017) AND (Tracks played < 2 times between Jan 1 2017 - Jan 1 2018)
+*)
+let toks = [Tok_Playlist; Tok_Time_Begin("1451649600"); Tok_Time_End("1483272000"); Tok_Comparator(2); Tok_Count(1); Tok_Limit(100); Tok_Filter_End; Tok_And; Tok_Playlist; Tok_Time_Begin("1483272000"); Tok_Time_End("1514808000"); Tok_Comparator(0); Tok_Count(2); Tok_Filter_End; Tok_End];;
 
+(* Top 100 most played *)
+(* let toks = [Tok_Playlist; Tok_Comparator(2); Tok_Count(1); Tok_Limit(100); Tok_Filter_End; Tok_End];; *)
+
+(* Make `username` match the `username` column in the MySQL `users` table. *)
 let username = "test_user" in
 let playlist_name = "bla" in
 let description = "my first generated playlist!" in

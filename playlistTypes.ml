@@ -12,11 +12,10 @@ type playlist_token =
   | Tok_Release_Start of string
   | Tok_Release_End of string
   | Tok_Count of int (* If set, must be > 0. *)
-  | Tok_Comparator of int (* If set, must be [0,3].
-  0 - <, 1 - <=, 2 - >, 3 - >=. Works in combination with`Tok_Count`.*)
+  | Tok_Comparator of int (* If set, must be [0,3]. 0 -- <, 1 -- <=, 2 -- >, 3 -- >=. Works in combination with`Tok_Count`.*)
   | Tok_Saved of int (* If set, must be [0,1]. 0 is not saved, 1 is saved. *)
   | Tok_Limit of int (* If set, must be > 0. *)
-  | Tok_End
+  | Tok_End (* This token exists to satisfy the lookahead(1) parser and signal the end of a token stream. *)
   (* Forcing assocativity not supported, yet. Should be eazy.
   | Tok_RParen
   | Tok_LParen
@@ -24,19 +23,23 @@ type playlist_token =
 
 class filter_cl =
   object (self)
-    (* Earliest UTC*)
+    (* Earliest UTC *)
     val mutable time_begin = ( "0" : string )
     (* Latest UTC -- 11 digits *)
     val mutable time_end = ( "99999999999" : string )
     (* Only track_id for now *)
     val mutable agby = ( "track_id" : string )
+    (* If set, must be > 0 *)
     val mutable limit = ( -1 : int )
-    (* 0: false, 1: true *)
+    (* If set, must be [0.1]. 0: false, 1: true *)
     val mutable saved = ( -1 : int )
+    (* If set, must be > 0 *)
     val mutable count = ( -1 : int )
-    (* 0: <, 1: <=, 2: >, 3: >=*)
+    (* If set, must be [0,3]. 0: <, 1: <=, 2: >, 3: >=*)
+    (* If value is [0,1], ORDER BY ASC, if [2,3], ORDER BY DESC *)
+    (* This is necessary for combining with a LIMIT clause *)
     val mutable comparator = ( -1 : int )
-    (* Earliest UTC*)
+    (* Earliest UTC *)
     val mutable release_start = ( "0" : string )
     (* Latest UTC -- 11 digits *)
     val mutable release_end = ( "99999999999" : string )
@@ -89,5 +92,5 @@ type playlist_expr =
   | Playlist of filter
   | Playlist_Or of playlist_expr * playlist_expr
   | Playlist_And of playlist_expr * playlist_expr
-  (* playlist a - playlist b *)
+    (* playlist a - playlist b *)
   | Playlist_Diff of playlist_expr * playlist_expr

@@ -15,11 +15,11 @@ let string_of_playlist_token (t : playlist_token) : string = match t with
   | Tok_Comparator(x) -> "Tok_Comparator(" ^ string_of_int x ^ ")"
   | Tok_Saved(x) -> "Tok_Saved(" ^ string_of_int x ^ ")"
   | Tok_Limit(x) -> "Tok_Limit(" ^ string_of_int x ^ ")"
+  | Tok_End -> "Tok_End"
   (* TODO: permit forcing assocativity
   | Tok_RParen -> "Tok_RParen"
   | Tok_LParen -> "Tok_LParen"
   *)
-  | Tok_End -> "Tok_End"
 
 let string_of_list ?newline:(newline=false) (f : 'a -> string) (l : 'a list) : string =
     "[" ^ (String.concat ", " @@ List.map f l) ^ "]" ^ (if newline then "\n" else "");;
