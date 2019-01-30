@@ -14,7 +14,7 @@ type playlist_expr =
   | Playlist of filter
   | Playlist_Or of playlist_expr * playlist_expr
   | Playlist_And of playlist_expr * playlist_expr
-  (* playlist a - playlist b *)
+    (* playlist a - playlist b *)
   | Playlist_Diff of playlist_expr * playlist_expr
 
 type filter =
@@ -34,13 +34,15 @@ class filter_cl =
     (* If set, must be > 0 *)
     val mutable limit = ( -1 : int )
 
-    (* 0: false, 1: true *)
+    (* If set, must be [0.1]. 0: false, 1: true *)
     val mutable saved = ( -1 : int )
 
     (* If set, must be > 0 *)
     val mutable count = ( -1 : int )
 
     (* If set, must be [0,3]. 0: <, 1: <=, 2: >, 3: >=*)
+    (* If value is [0,1], ORDER BY ASC, if [2,3], ORDER BY DESC *)
+    (* This is necessary for combining with a LIMIT clause *)
     val mutable comparator = ( -1 : int )
 
     (* Earliest UTC *)
@@ -57,7 +59,7 @@ The `filter_cl` class and its attributes map directly to 1 SQL query. When a `pl
 
 The code then merges the results of each `Playlist` evaluation as it walks back up the AST. When the entire AST is evaluated, it makes a second call to recently-played-playlists to create the playlist.
 
-Here is the evaluation of the AST constructed by the parser:
+Here is the evaluation of the AST that the parser emits:
 ```
 let rec eval_playlist_expr e username =
     match e with
@@ -98,7 +100,7 @@ type playlist_token =
   | Tok_Release_Start of string
   | Tok_Release_End of string
   | Tok_Count of int (* If set, must be > 0. *)
-  | Tok_Comparator of int (* If set, must be [0,3]. 0 : <, 1 : <=, 2 : >, 3 : >=. Works in combination with`Tok_Count`.*)
+  | Tok_Comparator of int (* If set, must be [0,3]. 0 : <, 1 : <=, 2 : >, 3 : >=. Works in combination with `Tok_Count`.*)
   | Tok_Saved of int (* If set, must be [0,1]. 0 is not saved, 1 is saved. *)
   | Tok_Limit of int (* If set, must be > 0. *)
   | Tok_End
@@ -109,6 +111,7 @@ type playlist_token =
   *)
 ```
 Grammar:
+(Terminals are surrounded by backticks)
 ```
 MyCoolPlaylist ::= OrPlaylist
 
@@ -185,7 +188,7 @@ WHERE num_plays > 1 ORDER BY num_plays DESC LIMIT 50
 ```
 But! Since membership in your library is dynamic, a call to the Spotify API checks if any of these songs are in your library, and filters out any that are.
 
-Last one -- let's compose multiple playlists: (100 most played from Jan 1 2016 - Jan 1 2017) AND (Tracks played < 4 times between Jan 1 2017 - Jan 1 2018) -- Your favorite tracks from 2016, that went out of style very quickly!
+Last one -- let's compose multiple playlists: (100 most played from Jan 1 2016 - Jan 1 2017) AND (Tracks played < 2 times between Jan 1 2017 - Jan 1 2018) -- Your favorite tracks from 2016, that went out of style very quickly!
 
 ```
 let toks = [Tok_Playlist; Tok_Time_Begin("1451649600"); Tok_Time_End("1483272000"); Tok_Comparator(2); Tok_Count(1); Tok_Limit(100); Tok_Filter_End; Tok_And; Tok_Playlist; Tok_Time_Begin("1483272000"); Tok_Time_End("1514808000"); Tok_Comparator(0); Tok_Count(2); Tok_Filter_End; Tok_End];;
@@ -245,7 +248,7 @@ I'd have to do some investigation to determine how accurate these attributes are
 - Playlist with songs from top listened artists
 ## Play density
 - Playlist of songs that have been played 2x in any week from time period X to time period Y.
-  - This is probably too complicated and compute intensive to do, at least with the current MySQL implementation in recently-played-playlists.
+  - Could be done easily if you deem a week to be Sunday-Saturday, but searching for every "1 week period" would be complicated and computationally intensive.
 ## Genre
 - This would be awesome! However, I've seen in practice that Spotify's genre tagging is very poor for electronic music, which is what I care the most about. Maybe it would work better for popular music.
 
@@ -255,6 +258,5 @@ Some are easier to implement than others. I picked the initial set of features t
 - Compare listening histories with friends -- do I listen to more Bon Jovi than Mike?
 - Graph visualizations of listening histories
 
-## TODO
-- properly package with opam so [recently-played-playlists-puppet](github.com/ndelnano/recently-played-playlists-puppet) can install it.
-- Implement 'Tok_LParen' and 'Tok_RParen' tokens in parser to allow enforcement of associativity
+## TODOs
+I track all the recently-played-playlists[-parser|-puppet] projects on one [trello board](https://trello.com/b/J5GirlnV/playlist-maker).

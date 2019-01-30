@@ -69,8 +69,7 @@ let test_parse_and_playlist_with_all_filter_attributes_set ctxt =
         Tok_And;
 
         Tok_Playlist; Tok_Time_Begin(time_begin1); Tok_Time_End(time_end1); Tok_Agby(agby1); Tok_Limit(limit1); Tok_Saved(saved1); Tok_Count(count1); Tok_Comparator(comparator1); Tok_Release_Start(rel_start1); Tok_Release_End(rel_end1); Tok_Filter_End; 
-
-
+    
     Tok_End] in
 
     let (ast, leftover_toks) = Parser.parse_playlist_expr toks in
@@ -143,9 +142,8 @@ let test_parse_or_playlist_with_all_filter_attributes_set ctxt =
 
         Tok_Or;
 
-        Tok_Playlist; Tok_Time_Begin(time_begin1); Tok_Time_End(time_end1); Tok_Agby(agby1); Tok_Limit(limit1); Tok_Saved(saved1); Tok_Count(count1); Tok_Comparator(comparator1); Tok_Release_Start(rel_start1); Tok_Release_End(rel_end1); Tok_Filter_End; 
-
-
+        Tok_Playlist; Tok_Time_Begin(time_begin1); Tok_Time_End(time_end1); Tok_Agby(agby1); Tok_Limit(limit1); Tok_Saved(saved1); Tok_Count(count1); Tok_Comparator(comparator1); Tok_Release_Start(rel_start1); Tok_Release_End(rel_end1); Tok_Filter_End;
+        
     Tok_End] in
 
     let (ast, leftover_toks) = Parser.parse_playlist_expr toks in
@@ -218,9 +216,8 @@ let test_parse_diff_playlist_with_all_filter_attributes_set ctxt =
 
         Tok_Diff;
 
-        Tok_Playlist; Tok_Time_Begin(time_begin1); Tok_Time_End(time_end1); Tok_Agby(agby1); Tok_Limit(limit1); Tok_Saved(saved1); Tok_Count(count1); Tok_Comparator(comparator1); Tok_Release_Start(rel_start1); Tok_Release_End(rel_end1); Tok_Filter_End; 
-
-
+        Tok_Playlist; Tok_Time_Begin(time_begin1); Tok_Time_End(time_end1); Tok_Agby(agby1); Tok_Limit(limit1); Tok_Saved(saved1); Tok_Count(count1); Tok_Comparator(comparator1); Tok_Release_Start(rel_start1); Tok_Release_End(rel_end1); Tok_Filter_End;
+        
     Tok_End] in
 
     let (ast, leftover_toks) = Parser.parse_playlist_expr toks in

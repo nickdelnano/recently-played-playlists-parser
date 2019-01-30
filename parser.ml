@@ -147,5 +147,7 @@ let rec parse_playlist_expr (toks : playlist_token list) : (playlist_expr * play
 
     (* Token stream should end with Tok_End by definition. *)
     let t' = match_playlist_token t Tok_End in
-    (* TODO: throw exception if t' still has tokens *)
-    (ast, t')
+
+    match t' with
+    [] -> (ast, t')
+    | _ -> raise (InvalidInputException("Tokens left at end of parse! All tokens should have been consumed"))
