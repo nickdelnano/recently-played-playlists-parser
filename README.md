@@ -116,7 +116,8 @@ type playlist_token =
   | Tok_Comparator of int (* If set, must be [0,3]. 0 : <, 1 : <=, 2 : >, 3 : >=. Works in combination with `Tok_Count`.*)
   | Tok_Saved of int (* If set, must be [0,1]. 0 is not saved, 1 is saved. *)
   | Tok_Limit of int (* If set, must be > 0. *)
-  | Tok_End
+  | Tok_End (* This token exists to satisfy the lookahead(1) parser and signal the end of a token stream. *)
+
 
   (* Forcing assocativity not supported, yet. Should be eazy. I have included these in the grammar, though.
   | Tok_RParen
