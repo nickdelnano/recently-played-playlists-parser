@@ -1,15 +1,28 @@
-## Inspiration and "why"
 In 2017 and 2018, Spotify [curated a playlist for each user with their most played tracks of the year](https://community.spotify.com/t5/Community-Blog/Your-2018-Wrapped/ba-p/4625551). In 2017 when I got the my first "most played" playlist, I thought it was super cool! I also saw many of my friends were eager to share this data on social media. 
 
-In the next few days, I wondered how I could make my own "most played of the year" playlist. I also didn't want to wait an entire year to get the data -- why not a "most played of the month" playlist? And why does it have to be "most" played -- what if I wanted a "least" played playlist?
+But how could you make your own "most played of the year" playlist. And why does it have to be "most" played -- what if I wanted a "least" played playlist, or to compose playlists based on any metadata or aggregation of metadata for a song/album/artist?
 
-I thought of building a project that would allow you to create any playlist you could dream up, using any data attributes about a song or any pattern in your listening habits.
+This project stores a users listening history over time and relevanat metadata for the song/album/artist. There is a context-free grammar to permit the definition of a playlist as a query over listening history data. The nature of the grammar allows complex playlists to be defined, such as a playlist that is the result of set operations on multiple playlists. The parser understands a language which represents a playlist and the evaluator walks the AST by querying MySQL, performing logic in python, and outputting a spotify playlist.
 
-A bit later, I thought about creating a grammar to define a "playlist", so that a single playlist could be composed of infinitely many playlists. 
-
-And about 1 year later, I have this proof of concept. I have named it "recently-played-playlists" because every playlist will only contain songs that you have previously listened to. There is absoutely no suggestion of music. This project is meant to allow unrestricted access to identifying your personal listening patterns, and creating playlists that you are unable to do by yourself.
+I call this "recently-played-playlists" because every playlist will only contain songs that you have previously listened to. This project is meant to allow unrestricted access to identifying your personal listening patterns, and creating playlists that you are unable to do by yourself.
 
 I'm also looking to continue developing if I find interesting ideas. I have a [few examples below that should give you an idea of what's possible](https://github.com/ndelnano/recently-played-playlists-parser/blob/master/README.md#show-me-a-damn-example). Send me any of your own ideas via an issue or email.
+
+Grammar:
+(Terminals are surrounded by backticks)
+```
+MyCoolPlaylist ::= OrPlaylist
+
+OrPlaylist ::= AndPlaylist `Tok_Or` OrPlaylist | AndPlaylist
+
+AndPlaylist ::= DiffPlaylist `Tok_And` AndPlaylist | DiffPlaylist
+
+DiffPlaylist ::= Playlist `Tok_Diff` DiffPlaylist | Playlist
+
+Playlist ::= `Tok_Playlist` Filter `Tok_Filter_End` | `Tok_RParen` MyCoolPlaylist `Tok_LParen`
+
+Filter ::= `Tok_Time_Begin` | `Tok_Time_End` | `Tok_Agby` | `Tok_Release_Start` | `Tok_Release_End` | `Tok_Count` | `Tok_Limit` | `Tok_Comparator` | `Tok_Saved`
+```
 
 ## Installing and running
 See [recently-played-playlists-puppet](https://github.com/ndelnano/recently-played-playlists-puppet).
@@ -64,7 +77,7 @@ class filter_cl =
     (* Latest UTC -- 11 digits *)
     val mutable release_end = ( "99999999999" : string )
 
-    (* release_start and release_end are not supported in the HTTP API yet! *)
+    (* release_start and release_end are not supported in the HTTP API *)
 
 ```
 
@@ -123,21 +136,6 @@ type playlist_token =
   | Tok_RParen
   | Tok_LParen
   *)
-```
-Grammar:
-(Terminals are surrounded by backticks)
-```
-MyCoolPlaylist ::= OrPlaylist
-
-OrPlaylist ::= AndPlaylist `Tok_Or` OrPlaylist | AndPlaylist
-
-AndPlaylist ::= DiffPlaylist `Tok_And` AndPlaylist | DiffPlaylist
-
-DiffPlaylist ::= Playlist `Tok_Diff` DiffPlaylist | Playlist
-
-Playlist ::= `Tok_Playlist` Filter `Tok_Filter_End` | `Tok_RParen` MyCoolPlaylist `Tok_LParen`
-
-Filter ::= `Tok_Time_Begin` | `Tok_Time_End` | `Tok_Agby` | `Tok_Release_Start` | `Tok_Release_End` | `Tok_Count` | `Tok_Limit` | `Tok_Comparator` | `Tok_Saved`
 ```
 
 ## Creating a playlist
