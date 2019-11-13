@@ -13,15 +13,15 @@ Grammar:
 ```
 MyCoolPlaylist ::= OrPlaylist
 
-OrPlaylist ::= AndPlaylist `Tok_Or` OrPlaylist | AndPlaylist
+OrPlaylist ::= AndPlaylist `Token_Or` OrPlaylist | AndPlaylist
 
-AndPlaylist ::= DiffPlaylist `Tok_And` AndPlaylist | DiffPlaylist
+AndPlaylist ::= DiffPlaylist `Token_And` AndPlaylist | DiffPlaylist
 
-DiffPlaylist ::= Playlist `Tok_Diff` DiffPlaylist | Playlist
+DiffPlaylist ::= Playlist `Token_Diff` DiffPlaylist | Playlist
 
-Playlist ::= `Tok_Playlist` Filter `Tok_Filter_End` | `Tok_RParen` MyCoolPlaylist `Tok_LParen`
+Playlist ::= `Token_Playlist` Filter `Token_Filter_End` | `Token_RParen` MyCoolPlaylist `Token_LParen`
 
-Filter ::= `Tok_Time_Begin` | `Tok_Time_End` | `Tok_Agby` | `Tok_Release_Start` | `Tok_Release_End` | `Tok_Count` | `Tok_Limit` | `Tok_Comparator` | `Tok_Saved`
+Filter ::= `Token_Time_Begin` | `Token_Time_End` | `Token_Agby` | `Token_Release_Start` | `Token_Release_End` | `Token_Count` | `Token_Limit` | `Token_Comparator` | `Token_Saved`
 ```
 
 ## Installing and running
