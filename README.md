@@ -6,7 +6,7 @@ This project stores a users listening history over time and relevanat metadata f
 
 I call this "recently-played-playlists" because every playlist will only contain songs that you have previously listened to. This project is meant to allow unrestricted access to identifying your personal listening patterns, and creating playlists that you are unable to do by yourself.
 
-I'm also looking to continue developing if I find interesting ideas. I have a [few examples below that should give you an idea of what's possible](https://github.com/ndelnano/recently-played-playlists-parser/blob/master/README.md#show-me-a-damn-example). Send me any of your own ideas via an issue or email.
+I'm also looking to continue developing if I find interesting ideas. I have a [few examples below that should give you an idea of what's possible](https://github.com/ndelnano/recently-played-playlists-parser/blob/master/README.md#show-me-a-damn-example). Send in any of your own ideas via an issue.
 
 Grammar:
 (Terminals are surrounded by backticks)
