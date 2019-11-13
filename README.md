@@ -108,7 +108,7 @@ let rec eval_playlist_expr e username =
             let song_ids = Str.split (Str.regexp ",") resp in
             List.fold_right SS.add song_ids SS.empty)
 ```
-(Head) recursion makes it stupid easy!
+recursion makes it stupid easy!
 
 ## Grammar
 
