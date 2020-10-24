@@ -146,7 +146,7 @@ I only have very "top-level" tests for the parser. I sleep well at night due to 
 ## Example
 You can use any of the fields documented above in the `filter_cl` class.
 
-Here's a simple playlist: Top 100 most played of all time
+Top 100 most played of all time
 
 ```
 let toks = [Tok_Playlist; Tok_Comparator(2); Tok_Count(1); Tok_Limit(100); Tok_Filter_End; Tok_End];;
@@ -176,7 +176,7 @@ SELECT spotify_id FROM
 WHERE num_plays > 1 ORDER BY num_plays DESC LIMIT 100
 ```
 
-Another example: 50 most played songs between Jan 1 2017 - Jan 1 2018, that are not saved in your library -- maybe you wish these were in your library, but you have forgotten to add them!
+50 most played songs between Jan 1 2017 - Jan 1 2018, that are not saved in your library -- maybe you wish these were in your library, but you have forgotten to add them!
 ```
 let toks = [Tok_Playlist; Tok_Time_Begin("1483272000"); Tok_Time_End("1514808000"); Tok_Saved(0); Tok_Comparator(2); Tok_Count(1); Tok_Limit(50); Tok_Filter_End; Tok_End];;
 ```
